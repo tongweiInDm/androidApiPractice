@@ -16,7 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private static final long SCAN_CYCLE = 5000;
     private static final int MSG_SCAN = 0;
 
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss.SSS");
     private WifiManager mWifiManager;
     private Handler mHandler;
+    private TextView mLogView;
+    private StringBuilder mLogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +48,14 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     mWifiManager.startScan();
                     Log.d(TAG, "start scan");
+                    log("start scan");
                 }
                 mHandler.sendEmptyMessageDelayed(MSG_SCAN, SCAN_CYCLE);
             }
         };
+
+        mLogView = findViewById(R.id.tv_log);
+        mLogBuilder = new StringBuilder();
 
         findViewById(R.id.btn_scan).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
                 boolean resultUpdate = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
 
                 List<ScanResult> resultList = mWifiManager.getScanResults();
-                Log.d(TAG, "resultUpdate:" + resultUpdate + ", result.size:" + resultList.size());
+                String log = "resultUpdate:" + resultUpdate + ", result.size:" + resultList.size();
+                Log.d(TAG, log);
 //                for (int i = 0;i < resultList.size();i++) {
 //                    ScanResult scanResult = resultList.get(i);
 //                    Log.d(TAG, "---------------------" + i);
@@ -69,8 +80,16 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.d(TAG, "scanResult[" + i + "].level:" + scanResult.level);
 //                    Log.d(TAG, "scanResult[" + i + "].capabilities:" + scanResult.capabilities);
 //                }
+                log(log);
             }
         }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+    }
+
+    private void log(String log) {
+        mLogBuilder.append(mDateFormat.format(new Date(System.currentTimeMillis())) + ":");
+        mLogBuilder.append(log);
+        mLogBuilder.append("\n");
+        mLogView.setText(mLogBuilder.toString());
     }
 
     @Override
