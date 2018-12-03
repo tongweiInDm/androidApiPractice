@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         registerReceiver(mScanResultReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+
+        Intent intent = new Intent(this, KeepALiveService.class);
+        ContextCompat.startForegroundService(this, intent);
     }
 
     private void log(String log) {
