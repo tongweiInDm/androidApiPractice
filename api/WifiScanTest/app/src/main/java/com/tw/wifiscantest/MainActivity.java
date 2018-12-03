@@ -25,21 +25,22 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "twTestWifi";
     private static final int PERMISSION_REQ_CODE = 123;
-    private static final long SCAN_CYCLE = 5000;
+    private static final long SCAN_CYCLE = 30000;
     private static final int MSG_SCAN = 0;
 
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss.SSS");
-    private WifiManager mWifiManager;
     private Handler mHandler;
     private TextView mLogView;
     private StringBuilder mLogBuilder;
+    private WifiManager mWifiManager;
+    private BroadcastReceiver mScanResultReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mWifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         mHandler = new Handler() {
             public void handleMessage(Message msg) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -47,10 +48,26 @@ public class MainActivity extends AppCompatActivity {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQ_CODE);
                 } else {
                     mWifiManager.startScan();
-                    Log.d(TAG, "start scan");
                     log("start scan");
                 }
                 mHandler.sendEmptyMessageDelayed(MSG_SCAN, SCAN_CYCLE);
+            }
+        };
+
+        mScanResultReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean resultUpdate = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
+                List<ScanResult> resultList = mWifiManager.getScanResults();
+                log("resultUpdate:" + resultUpdate + ", result.size:" + resultList.size());
+//                for (int i = 0;i < resultList.size();i++) {
+//                    ScanResult scanResult = resultList.get(i);
+//                    Log.d(TAG, "---------------------" + i);
+//                    Log.d(TAG, "scanResult[" + i + "].BSSID:" + scanResult.BSSID);
+//                    Log.d(TAG, "scanResult[" + i + "].SSID:" + scanResult.SSID);
+//                    Log.d(TAG, "scanResult[" + i + "].level:" + scanResult.level);
+//                    Log.d(TAG, "scanResult[" + i + "].capabilities:" + scanResult.capabilities);
+//                }
             }
         };
 
@@ -64,25 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                boolean resultUpdate = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
-
-                List<ScanResult> resultList = mWifiManager.getScanResults();
-                String log = "resultUpdate:" + resultUpdate + ", result.size:" + resultList.size();
-                Log.d(TAG, log);
-//                for (int i = 0;i < resultList.size();i++) {
-//                    ScanResult scanResult = resultList.get(i);
-//                    Log.d(TAG, "---------------------" + i);
-//                    Log.d(TAG, "scanResult[" + i + "].BSSID:" + scanResult.BSSID);
-//                    Log.d(TAG, "scanResult[" + i + "].SSID:" + scanResult.SSID);
-//                    Log.d(TAG, "scanResult[" + i + "].level:" + scanResult.level);
-//                    Log.d(TAG, "scanResult[" + i + "].capabilities:" + scanResult.capabilities);
-//                }
-                log(log);
-            }
-        }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        registerReceiver(mScanResultReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     }
 
     private void log(String log) {
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         mLogBuilder.append(log);
         mLogBuilder.append("\n");
         mLogView.setText(mLogBuilder.toString());
+        Log.d(TAG, log);
     }
 
     @Override
