@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, KeepALiveService.class);
         ContextCompat.startForegroundService(this, intent);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void log(String log) {
