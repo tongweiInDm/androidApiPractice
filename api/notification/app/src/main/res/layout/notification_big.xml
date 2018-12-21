@@ -9,13 +9,13 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/notification_title"
-        android:background="?android:attr/colorBackgroundFloating"
+        android:background="?android:attr/colorBackground"
         android:id="@+id/notification_title"
         style="@style/TextAppearance.Compat.Notification.Title" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground"
+        android:background="?android:attr/colorBackgroundFloating"
         android:layout_weight="1"
         android:text="@string/notification_content"
         android:id="@+id/notification_content"
