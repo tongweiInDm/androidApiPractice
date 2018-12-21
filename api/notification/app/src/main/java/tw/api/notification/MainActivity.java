@@ -88,13 +88,14 @@ public class MainActivity extends AppCompatActivity {
                 .setContentIntent(pendingIntent)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setAutoCancel(false)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setOngoing(true)//设置一个进行中的通知，不能被右划删除
 //                .addAction(R.drawable.ic_launcher_foreground, "tongwei", pendingActionIntent)
 //                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(notificationLayout)
                 .setCustomBigContentView(notificationLayoutExpanded)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        //除了 action button 以外，还可以添加输入框，设置在锁屏显示，以及悬浮通知
+        //除了 action button 以外，还可以添加输入框，设置在锁屏显示，以及悬浮通知，但是锁屏显示和悬浮通知可以被用户的设置给覆盖掉
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
