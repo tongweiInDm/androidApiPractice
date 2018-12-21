@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 /**
@@ -73,8 +74,12 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         Intent actionIntent = new Intent(this, MainActivity.class);
+
         actionIntent.putExtra("from", "13654");
         PendingIntent pendingActionIntent = PendingIntent.getActivity(this, 0, actionIntent, 0);
+
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small);
+        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_big);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_background)
@@ -84,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setAutoCancel(false)
                 .setOngoing(true)//设置一个进行中的通知，不能被右划删除
-                .addAction(R.drawable.ic_launcher_foreground, "tongwei", pendingActionIntent)
+//                .addAction(R.drawable.ic_launcher_foreground, "tongwei", pendingActionIntent)
+//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(notificationLayout)
+                .setCustomBigContentView(notificationLayoutExpanded)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         //除了 action button 以外，还可以添加输入框，设置在锁屏显示，以及悬浮通知
 
