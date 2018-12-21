@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -27,11 +28,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final Handler handler = new Handler();
         findViewById(R.id.text_hello).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNotification();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showNotification();
+                    }
+                }, 2000);
             }
         });
 
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         Intent actionIntent = new Intent(this, MainActivity.class);
-        actionIntent.putExtra("from", "notification");
+        actionIntent.putExtra("from", "13654");
         PendingIntent pendingActionIntent = PendingIntent.getActivity(this, 0, actionIntent, 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -75,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("title")
                 .setContentText("contentText")
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(false)
+                .setOngoing(true)//设置一个进行中的通知，不能被右划删除
                 .addAction(R.drawable.ic_launcher_foreground, "tongwei", pendingActionIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         //除了 action button 以外，还可以添加输入框，设置在锁屏显示，以及悬浮通知
