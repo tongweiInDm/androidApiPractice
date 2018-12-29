@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Player</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    
+    <script>
+			function run()
+			{
+				var mp = document.getElementById("mp");
+				var file = document.getElementById("file");
+				mp.src = file.value;
+				mp.play();
+			}
+		</script>
+</head>
+<body lang="Eng">
+    <input id="file" style="width:90%" value="/mnt/sdcard/qqmusic/song/1.mp3">
+		<input type="button" value="Load" onclick="run()">
+		<br>
+		<br>
+		<center>
+			<audio id="mp" controls>
+		</center>
+</body>
+</html>
