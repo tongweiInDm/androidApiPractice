@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
             if (!Settings.System.canWrite(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 startActivity(intent);
+            } else {
+                Toast.makeText(this, "已授权", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, "已授权", Toast.LENGTH_SHORT).show();
         }
     }
 
