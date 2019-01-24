@@ -27,7 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "twTestWifi";
     private static final int PERMISSION_REQ_CODE = 123;
-    private static final long SCAN_CYCLE = 5000;
+    private static final long SCAN_CYCLE = 2000;
     private static final int MSG_SCAN = 0;
 
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss.SSS");

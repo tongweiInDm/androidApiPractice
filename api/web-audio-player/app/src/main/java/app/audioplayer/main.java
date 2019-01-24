@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 public class main extends Activity {
     /**
@@ -33,5 +37,11 @@ public class main extends Activity {
         });
 
         setContentView(page);
+
+        BigInteger bigInteger = new BigInteger("100000000000000000000001", 20);
+        String data = bigInteger.toString(32);
+        Log.d("bigIntTest", "data:" + data);
+        Log.d("bigIntTest", "data.substring(0, 16):" + data.substring(0, 16));
+        Log.d("bigIntTest", "data.substring(0, 16):" + data.substring(0, 16).getBytes().length);
     }
 }
