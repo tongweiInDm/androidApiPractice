@@ -6,5 +6,6 @@
         </declare-styleable>
         <declare-styleable name="AttrView_measure">
             <attr name="test3" format="dimension"/>
+            <attr name="test4" format="dimension"/>
         </declare-styleable>
 </resources>
