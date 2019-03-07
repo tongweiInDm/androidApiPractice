@@ -6,10 +6,17 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="add" />
+
+    <Button
+        android:id="@+id/btn_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="remove" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleView"

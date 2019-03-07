@@ -2,11 +2,11 @@ package com.tw.recycleviewtest;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +31,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         RecyclerView recyclerView = findViewById(R.id.recycleView);
-        recyclerView.setAdapter(new Adapter(this, dataList));
+        final Adapter adapter = new Adapter(this, dataList);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 5));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        findViewById(R.id.btn_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.mList.add(0, "new item");
+                adapter.notifyItemInserted(0);
+            }
+        });
+
+        findViewById(R.id.btn_remove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.mList.remove(0);
+                adapter.notifyItemRemoved(0);
+            }
+        });
+
+
     }
 
     public static class Adapter extends RecyclerView.Adapter<ViewHolder> {
